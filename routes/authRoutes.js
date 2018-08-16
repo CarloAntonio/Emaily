@@ -12,15 +12,21 @@ module.exports = app => {
   );
 
   //setup route and use passport to exchage code for profile
-  app.get("/auth/google/callback", passport.authenticate("google"));
+  app.get(
+    "/auth/google/callback",
+    passport.authenticate("google"),
+    (req, res) => {
+      res.redirect("/surveys"); //redirect sends you to a new route on client
+    }
+  );
 
   //setup logout route
   app.get("/api/logout", (req, res) => {
     req.logout(); //remove id from cookie
-    res.send(req.user);
+    res.redirect("/"); //send use to landing page
   });
 
   app.get("/api/current_user", (req, res) => {
-    res.sent(req.user);
+    res.send(req.user);
   });
 };

@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cookieSession = require("cookie-session");
 const passport = require("passport");
+const bodyParser = require("body-parser");
 
 const keys = require("./config/keys");
 
@@ -14,6 +15,9 @@ mongoose.connect(keys.mongoURI);
 
 //setup express
 const app = express();
+
+//use body parser
+app.use(bodyParser.json());
 
 //make use of cookies
 app.use(
@@ -29,6 +33,20 @@ app.use(passport.session());
 
 //connect routes
 require("./routes/authRoutes")(app);
+require("./routes/billingRoutes")(app);
+
+if (process.env.NODE_ENV === "productions") {
+  // express will serve up production assets
+  // like main.js file, or main.css file
+  app.use(express.static("client/build"));
+
+  // express will serve yo the index.html file
+  // if it doesn't recognize the route
+  const path = require("path");
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  }); //catch all
+}
 
 // Dynamic Port Binding
 const PORT = process.env.PORT || 5000;
