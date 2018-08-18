@@ -7,7 +7,9 @@ import "materialize-css/dist/css/materialize.min.css";
 
 import App from "./components/App";
 import reducers from "./reducers";
-import registerServiceWorker from "./registerServiceWorker";
+import axios from "axios";
+
+window.axios = axios;
 
 const store = createStore(reducers, {}, applyMiddleware(reduxThunk));
 
@@ -18,4 +20,3 @@ const app = (
 );
 
 ReactDOM.render(app, document.getElementById("root"));
-// registerServiceWorker();

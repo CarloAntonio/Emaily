@@ -8,6 +8,7 @@ const keys = require("./config/keys");
 
 //import with no assignment
 require("./models/User");
+require("./models/Survey");
 require("./services/passport");
 
 //connect to mongoose, (url from mlab config)
@@ -34,6 +35,7 @@ app.use(passport.session());
 //connect routes
 require("./routes/authRoutes")(app);
 require("./routes/billingRoutes")(app);
+require("./routes/surveyRoutes")(app);
 
 if (process.env.NODE_ENV === "production") {
   // express will serve up production assets
